@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { X } from "lucide-react"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { metroTrains } from "@/lib/metro-trains"
 
 interface TrainsInfoProps {
@@ -32,7 +31,7 @@ export function TrainsInfo({ isOpen, onClose }: TrainsInfoProps) {
           </button>
         </div>
 
-        <ScrollArea className="flex-1 min-h-0 p-4">
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4">
           <div className="space-y-6">
             {metroTrains.map((train) => (
               <div
@@ -70,7 +69,7 @@ export function TrainsInfo({ isOpen, onClose }: TrainsInfoProps) {
               </div>
             ))}
           </div>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   )
