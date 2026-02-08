@@ -1,0 +1,4 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="37" fill="#E42313"/>
+  <path d="M50 130V70L90 40L130 70V130M90 40V130M50 130H130" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
