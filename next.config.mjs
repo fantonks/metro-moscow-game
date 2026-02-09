@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isElectronBuild = process.env.BUILD_ELECTRON === '1'
+
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
@@ -6,15 +8,12 @@ const nextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  ...(isElectronBuild
+    ? { output: 'export', assetPrefix: './' }
+    : {}),
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-        pathname: '/**',
-      },
-    ],
+    // Только локальные изображения из /public
   },
   async headers() {
     return [

@@ -5,6 +5,7 @@ import { X, Calendar, CheckCircle2, XCircle, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { stations, type Station } from "@/lib/metro-data"
 import { metroTrains, type MetroTrain } from "@/lib/metro-trains"
+import { getStationPhotoUrl } from "@/lib/station-photos"
 import type { GameState } from "@/lib/game-store"
 
 interface DailyMissionProps {
@@ -177,7 +178,10 @@ export function DailyMission({ gameState, isOpen, onClose, onComplete }: DailyMi
                       alt="Поезд метро"
                       className={`w-full h-full object-cover transition-opacity ${imageLoaded ? "opacity-100" : "opacity-0"}`}
                       onLoad={() => setImageLoaded(true)}
-                      onError={() => setImageLoaded(true)}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/placeholder.svg"
+                        setImageLoaded(true)
+                      }}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-6xl bg-muted">
@@ -186,7 +190,7 @@ export function DailyMission({ gameState, isOpen, onClose, onComplete }: DailyMi
                   )
                 ) : (
                   <img
-                    src={targetStation?.photoUrl || "/placeholder.svg"}
+                    src={targetStation ? getStationPhotoUrl(targetStation.id) : "/placeholder.svg"}
                     alt="Станция метро"
                     className={`w-full h-full object-cover transition-opacity ${imageLoaded ? "opacity-100" : "opacity-0"}`}
                     onLoad={() => setImageLoaded(true)}

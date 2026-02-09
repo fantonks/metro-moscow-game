@@ -1,14 +1,46 @@
 let audioContext: AudioContext | null = null
+let audioResumed = false
+
+function resumeAudioContext(): void {
+  if (typeof window === "undefined" || audioResumed) return
+  const ctx = getAudioContext()
+  if (ctx?.state === "suspended") {
+    ctx.resume().then(() => { audioResumed = true }).catch((e) => console.warn("[sound] AudioContext resume failed:", e))
+  } else if (ctx) {
+    audioResumed = true
+  }
+}
 
 function getAudioContext(): AudioContext | null {
   if (typeof window === "undefined") return null
   if (!audioContext) {
-    audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
+    try {
+      const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      if (Ctx) audioContext = new Ctx()
+    } catch (e) {
+      console.warn("[sound] AudioContext creation failed:", e)
+      return null
+    }
   }
   return audioContext
 }
 
+/** Call once on first user interaction so audio works on all devices. */
+export function initAudioOnFirstInteraction(): void {
+  if (typeof window === "undefined") return
+  const run = () => {
+    resumeAudioContext()
+    window.removeEventListener("click", run, true)
+    window.removeEventListener("touchstart", run, true)
+    window.removeEventListener("keydown", run, true)
+  }
+  window.addEventListener("click", run, true)
+  window.addEventListener("touchstart", run, true)
+  window.addEventListener("keydown", run, true)
+}
+
 export function playClickSound() {
+  resumeAudioContext()
   const ctx = getAudioContext()
   if (!ctx) return
 
@@ -23,13 +55,14 @@ export function playClickSound() {
     gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05)
     oscillator.start(ctx.currentTime)
     oscillator.stop(ctx.currentTime + 0.05)
-  } catch {
-    // Ignore errors
+  } catch (e) {
+    console.warn("[sound] playClickSound failed:", e)
   }
 }
 
 /** Звук ножа — резкий «свинг» при появлении/исчезновении заставки */
 export function playKnifeSound() {
+  resumeAudioContext()
   const ctx = getAudioContext()
   if (!ctx) return
 
@@ -54,7 +87,7 @@ export function playKnifeSound() {
     gainNode.connect(ctx.destination)
     noise.start(ctx.currentTime)
     noise.stop(ctx.currentTime + 0.15)
-  } catch {
-    // Ignore errors
+  } catch (e) {
+    console.warn("[sound] playKnifeSound failed:", e)
   }
 }

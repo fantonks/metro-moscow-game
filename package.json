@@ -2,15 +2,19 @@
   "name": "metro-moscow-game",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "build": "next build",
     "build:webpack": "next build --webpack",
+    "build:electron": "cross-env BUILD_ELECTRON=1 next build",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
     "dev:vite": "vite",
     "download-photos": "node scripts/download-station-photos.mjs",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "electron": "electron .",
+    "pack:win": "npm run build:electron && electron-builder --win"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -70,10 +74,21 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
     "typescript": "^5",
     "vite": "^6.0.7"
+  },
+  "build": {
+    "appId": "com.metro.moscow.game",
+    "productName": "Метро Москвы",
+    "directories": { "output": "dist-electron" },
+    "files": ["out/**", "electron/**", "package.json"],
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": true, "shortcutName": "Метро Москвы" }
   }
 }

@@ -1,11 +1,14 @@
 // Game state management with localStorage persistence
 // Ежедневные миссии: 5→1★, 15→2★, 23→3★, 30→Чемпион
 
+export const GAME_STATE_VERSION = 1
+
 export interface GameState {
-  passedStations: string[] // Array of station IDs
-  currentOpeningDateIndex: number // Index in opening dates array
-  quizErrors: Record<string, number> // Station ID -> error count
-  completedDailyMissions: string[] // Date strings (YYYY-MM-DD) — миссии по дням
+  version?: number // for future migrations
+  passedStations: string[]
+  currentOpeningDateIndex: number
+  quizErrors: Record<string, number>
+  completedDailyMissions: string[]
   lastDailyMissionDate: string | null
   isOnboardingComplete: boolean
   finalQuizCompleted: boolean
@@ -43,29 +46,45 @@ const defaultState: GameState = {
   finalQuizCompleted: false,
 }
 
+/** Default state for fallback when load fails (SSR or localStorage error). */
+export function getDefaultGameState(): GameState {
+  return { ...defaultState }
+}
+
+function migrateState(parsed: Record<string, unknown>): GameState {
+  const merged = { ...defaultState, ...parsed } as GameState
+  const ver = merged.version ?? 0
+  if (ver < GAME_STATE_VERSION) {
+    merged.version = GAME_STATE_VERSION
+    // future: if (ver < 2) { ... }
+  }
+  return merged
+}
+
 export function loadGameState(): GameState {
-  if (typeof window === 'undefined') return defaultState
-  
+  if (typeof window === 'undefined') return getDefaultGameState()
+
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
-      const parsed = JSON.parse(saved)
-      return { ...defaultState, ...parsed }
+      const parsed = JSON.parse(saved) as Record<string, unknown>
+      return migrateState(parsed)
     }
   } catch (e) {
-    console.error('Failed to load game state:', e)
+    console.error('[game-store] Failed to load game state:', e)
   }
-  
-  return defaultState
+
+  return getDefaultGameState()
 }
 
 export function saveGameState(state: GameState): void {
   if (typeof window === 'undefined') return
-  
+
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    const toSave = { ...state, version: GAME_STATE_VERSION }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
   } catch (e) {
-    console.error('Failed to save game state:', e)
+    console.error('[game-store] Failed to save game state:', e)
   }
 }
 

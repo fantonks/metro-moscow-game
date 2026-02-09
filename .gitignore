@@ -1,27 +1,34 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies — do not commit; install with npm install
+node_modules/
 
-# dependencies
-/node_modules
+# Next.js
+.next/
+out/
 
-# next.js
-/.next/
-/out/
+# Production / build output
+build/
+dist/
+dist-electron/
 
-# production
-/build
-
-# debug
+# Debug and logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
-# env files
-.env*
+# Environment (secrets)
+.env
+.env.*
+!.env.example
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# OS
+.DS_Store
+Thumbs.db

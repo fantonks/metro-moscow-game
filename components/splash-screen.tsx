@@ -29,7 +29,14 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 
   useEffect(() => {
     if (!fadeOut) return
-    const t = setTimeout(onComplete, FADE_OUT_MS)
+    const t = setTimeout(() => {
+      try {
+        onComplete()
+      } catch (e) {
+        console.error("[SplashScreen] onComplete failed:", e)
+        onComplete()
+      }
+    }, FADE_OUT_MS)
     return () => clearTimeout(t)
   }, [fadeOut, onComplete])
 

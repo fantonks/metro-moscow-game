@@ -14,6 +14,7 @@ import {
   type GameState,
   loadGameState,
   saveGameState,
+  getDefaultGameState,
   markStationPassed,
   advanceOpeningDate,
   completeOnboarding,
@@ -25,7 +26,9 @@ import { Sparkles, RotateCcw, Train } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { SplashScreen } from "@/components/splash-screen"
-import { playClickSound } from "@/lib/sound"
+import { playClickSound, initAudioOnFirstInteraction } from "@/lib/sound"
+
+const LOG = "[MetroGame]"
 
 export default function MetroGame() {
   const [gameState, setGameState] = useState<GameState | null>(null)
@@ -41,14 +44,30 @@ export default function MetroGame() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const loaded = loadGameState()
+    initAudioOnFirstInteraction()
+  }, [])
+
+  useEffect(() => {
+    let loaded: GameState
+    try {
+      loaded = loadGameState()
+    } catch (e) {
+      console.error(LOG, "Failed to load game state, using default:", e)
+      loaded = getDefaultGameState()
+    }
     setGameState(loaded)
     setShowOnboarding(!loaded.isOnboardingComplete)
     setIsLoading(false)
   }, [])
 
   useEffect(() => {
-    if (gameState) saveGameState(gameState)
+    if (gameState) {
+      try {
+        saveGameState(gameState)
+      } catch (e) {
+        console.error(LOG, "Auto-save failed:", e)
+      }
+    }
   }, [gameState])
 
   const handleStationClick = useCallback((station: Station, anchor: { x: number; y: number }) => {
@@ -95,9 +114,15 @@ export default function MetroGame() {
   }, [gameState, selectedStation])
 
   const handleOnboardingComplete = useCallback(() => {
-    if (!gameState) return
-    setGameState(completeOnboarding(gameState))
-    setShowOnboarding(false)
+    try {
+      if (!gameState) return
+      setGameState(completeOnboarding(gameState))
+      setShowOnboarding(false)
+    } catch (e) {
+      console.error(LOG, "Onboarding complete failed:", e)
+      setShowOnboarding(false)
+      if (gameState) setGameState(completeOnboarding(gameState))
+    }
   }, [gameState])
 
   const handleDailyMissionComplete = useCallback((correct: boolean) => {
@@ -108,9 +133,13 @@ export default function MetroGame() {
 
   const handleResetGame = useCallback(() => {
     if (confirm("Вы уверены, что хотите сбросить весь прогресс?")) {
-      localStorage.removeItem("moscow-metro-game")
-      setGameState(loadGameState())
-      setShowOnboarding(true)
+      try {
+        localStorage.removeItem("moscow-metro-game")
+        setGameState(getDefaultGameState())
+        setShowOnboarding(true)
+      } catch (e) {
+        console.error(LOG, "Reset game failed:", e)
+      }
     }
   }, [])
 

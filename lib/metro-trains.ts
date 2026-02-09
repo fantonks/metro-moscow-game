@@ -27,7 +27,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Специально разработан для сурового климата Москвы и надземной эксплуатации. Имеет проход между секциями. Изначально создавался для Бутовской линии.",
     yearStart: 2003,
     lines: ["Бутовская", "Сокольническая", "Арбатско-Покровская"],
-    photoUrl: "/images/trains/rusich.jpg",
+    photoUrl: "/images/trains/oka.jpg",
   },
   {
     id: "81-760",

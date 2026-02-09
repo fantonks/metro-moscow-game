@@ -42,10 +42,15 @@ export function Onboarding({ isOpen, onComplete }: OnboardingProps) {
   const isLastStep = currentStep === steps.length - 1
 
   const handleNext = () => {
-    if (isLastStep) {
+    try {
+      if (isLastStep) {
+        onComplete()
+      } else {
+        setCurrentStep(prev => prev + 1)
+      }
+    } catch (e) {
+      console.error("[Onboarding] handleNext failed:", e)
       onComplete()
-    } else {
-      setCurrentStep(prev => prev + 1)
     }
   }
 
@@ -82,9 +87,11 @@ export function Onboarding({ isOpen, onComplete }: OnboardingProps) {
             {step.description}
           </p>
 
-          <Button 
+          <Button
+            type="button"
             onClick={handleNext}
             className="bg-[#E42313] hover:bg-[#c41f11] text-white px-8 shadow-lg"
+            aria-label={isLastStep ? "Начать исследование" : "Далее"}
           >
             {isLastStep ? "Начать исследование" : "Далее"}
             <ArrowRight className="w-4 h-4 ml-2" />
