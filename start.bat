@@ -1,25 +1,21 @@
 @echo off
 chcp 65001 >nul
-title Metro Game — Dev Server
+title Метро Москвы — запуск
 cd /d "%~dp0"
 
 echo.
 echo ========================================
-echo   Metro Game — запуск
+echo   Метро Москвы — одна кнопка запуска
 echo ========================================
 echo.
 
-:: Проверка Node.js
 where node >nul 2>&1
 if errorlevel 1 (
-  echo [ОШИБКА] Node.js не найден.
-  echo Установите: https://nodejs.org
-  echo Либо откройте "Node.js command prompt" и запустите start.bat снова.
+  echo [ОШИБКА] Node.js не найден. Установите: https://nodejs.org
   pause
   exit /b 1
 )
 
-:: Установка зависимостей при необходимости
 if not exist "node_modules" (
   echo Установка зависимостей...
   call npm install
@@ -31,17 +27,15 @@ if not exist "node_modules" (
   echo.
 )
 
-echo Запуск dev-сервера (Next.js)...
-echo Открой в браузере: http://localhost:3000
-echo Остановка: Ctrl+C
+echo Запуск сервера... Через несколько секунд откроется браузер.
 echo.
+:: Открыть браузер через 6 секунд (сервер успеет подняться)
+start /b cmd /c "timeout /t 6 /nobreak >nul && start http://localhost:3000"
 
 call npm run dev
 
 if errorlevel 1 (
   echo.
-  echo Если была ошибка spawn EPERM, запусти start-webpack.bat
-  echo или вручную: npm run dev:webpack
+  echo Если ошибка EPERM — запусти start-webpack.bat
 )
-echo.
 pause

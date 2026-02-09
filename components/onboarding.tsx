@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Train, MapPin, BookOpen, Trophy, ArrowRight } from "lucide-react"
 
 interface OnboardingProps {
@@ -87,15 +86,15 @@ export function Onboarding({ isOpen, onComplete }: OnboardingProps) {
             {step.description}
           </p>
 
-          <Button
+          <button
             type="button"
             onClick={handleNext}
-            className="bg-[#E42313] hover:bg-[#c41f11] text-white px-8 shadow-lg"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-[#E42313] px-8 py-2 text-white shadow-lg hover:bg-[#c41f11] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E42313] focus-visible:ring-offset-2"
             aria-label={isLastStep ? "Начать исследование" : "Далее"}
           >
             {isLastStep ? "Начать исследование" : "Далее"}
             <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+          </button>
         </div>
 
         {/* Skip button */}

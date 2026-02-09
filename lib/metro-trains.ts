@@ -63,6 +63,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Новейшая серия поездов с улучшенной шумоизоляцией, современными информационными системами и увеличенными дверными проёмами. Производство с 2023 года.",
     yearStart: 2023,
     lines: ["Сокольническая", "Замоскворецкая", "Кольцевая", "БКЛ", "Люблинско-Дмитровская"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-775.3",
@@ -71,6 +72,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Модификация «Москвы-2024» с доработанной системой торможения и кондиционирования. Поставляется с 2024 года.",
     yearStart: 2024,
     lines: ["Сокольническая", "Кольцевая", "БКЛ"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-720.1",
@@ -79,6 +81,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Вагоны производства ЛВЗ имени Егорова. Выпускались в 1990-х годах. Отличаются характерной кабиной и применялись на Филевской и Арбатско-Покровской линиях.",
     yearStart: 1993,
     lines: ["Арбатско-Покровская"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-720",
@@ -87,6 +90,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Экспериментальный состав с асинхронным приводом. Создан в единственном экземпляре в 1995 году. Отличался плавным ходом и низким уровнем шума.",
     yearStart: 1995,
     lines: ["Музейная эксплуатация"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-722",
@@ -95,6 +99,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Опытный шестивагонный состав с тиристорно-импульсным управлением. Выпущен в 1990 году, работал на Сокольнической линии.",
     yearStart: 1990,
     lines: ["Снят с эксплуатации"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-710",
@@ -103,6 +108,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Модификации «Номерных» вагонов с улучшенной электроаппаратурой. Эксплуатировались с 1979 года. Часть сохраняется в музейном состоянии.",
     yearStart: 1979,
     lines: ["Музейная эксплуатация"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-508",
@@ -111,6 +117,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Вагоны производства ЛВЗ. Эксплуатировались с 1970 года. Имели характерный скруглённый кузов. Сняты с эксплуатации в 2010-х годах.",
     yearStart: 1970,
     lines: ["Снят с эксплуатации"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-540",
@@ -119,6 +126,7 @@ export const metroTrains: MetroTrain[] = [
     description: "Первый тип вагонов Московского метро. 15 мая 1935 года именно такие составы открывали движение на первой линии. Секционные вагоны с деревянной обшивкой салона.",
     yearStart: 1935,
     lines: ["Музейная эксплуатация"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
   {
     id: "81-553",
@@ -127,5 +135,6 @@ export const metroTrains: MetroTrain[] = [
     description: "Электропоезда для Московского центрального кольца (МЦК) и диаметров (МЦД). Широкие двери, кондиционеры, информационные табло. Не используются в классическом метро.",
     yearStart: 2016,
     lines: ["МЦК", "МЦД"],
+    photoUrl: "/images/trains/placeholder.jpg",
   },
 ]

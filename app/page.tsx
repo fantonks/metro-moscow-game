@@ -115,15 +115,14 @@ export default function MetroGame() {
 
   const handleOnboardingComplete = useCallback(() => {
     try {
-      if (!gameState) return
-      setGameState(completeOnboarding(gameState))
       setShowOnboarding(false)
+      setGameState((prev) => completeOnboarding(prev ?? getDefaultGameState()))
     } catch (e) {
       console.error(LOG, "Onboarding complete failed:", e)
       setShowOnboarding(false)
-      if (gameState) setGameState(completeOnboarding(gameState))
+      setGameState((prev) => prev ?? getDefaultGameState())
     }
-  }, [gameState])
+  }, [])
 
   const handleDailyMissionComplete = useCallback((correct: boolean) => {
     if (!gameState) return
